@@ -3,11 +3,11 @@ import matplotlib.pyplot as pyPlot
 
 # Global Constants
 
-lengthOfRod = 10 #n
-unitTime = 1 #m
+lengthOfRod = 10
+unitTime = 1
 heatConductivity = 100
-xVectorStepSize = 0.25 #h
-yVectorStepSize = 0.025 #k
+xVectorStepSize = 0.25
+yVectorStepSize = 0.025
 
 # Length Vector plotted on x-axis
 xVector = numpy.arange(0, lengthOfRod+xVectorStepSize, xVectorStepSize)
@@ -37,7 +37,7 @@ for deltaTime in range (1, yVectorLength-1):
                  gridMatrix[deltaLength+1,deltaTime-1])
             ) + gridMatrix[deltaLength,deltaTime-1]
 
-gridMatrix=gridMatrix
+print(gridMatrix)
 
 pyPlot.plot(gridMatrix)
 pyPlot.show()
