@@ -4,40 +4,45 @@ import matplotlib.pyplot as pyPlot
 # Global Constants
 
 lengthOfRod = 10
-unitTime = 1
-heatConductivity = 100
-xVectorStepSize = 0.25
-yVectorStepSize = 0.025
+maxTime = 1
+heatConductivity = 1 #100 is going the least in nagtive and 1000 produces the same graph to my eye
+numPointsSpace = 200
+numPointsTime = 2000
 
 # Length Vector plotted on x-axis
-xVector = numpy.arange(0, lengthOfRod+xVectorStepSize, xVectorStepSize)
+xs = numpy.linspace(0, lengthOfRod, numPointsSpace)
 # Time Vector plotted on y-axis
-yVector = numpy.arange(0, unitTime+yVectorStepSize, yVectorStepSize)
+ts = numpy.linspace(0, maxTime, numPointsTime)
 
-boundaryConditions = [numpy.sin(lengthOfRod)+numpy.sin(unitTime), numpy.sin(lengthOfRod)]
-intialConditions = numpy.sin(xVector)
+timeStepSize = ts[1] - ts[0]
+spaceStepSize = xs[1] - xs[0]
 
-xVectorLength = len(xVector)
-yVectorLength = len(yVector)
+boundaryConditions = [numpy.sin(lengthOfRod)+numpy.sin(maxTime), 
+                    numpy.sin(lengthOfRod)]
+intialConditions = numpy.sin(xs)
+
+xsLength = len(xs)
+tsLength = len(ts)
 
 
 # Empty Matrix/NestedList with zeroes
-gridMatrix = numpy.zeros((xVectorLength, yVectorLength))
+gridMatrix = numpy.zeros((xsLength, tsLength))
 gridMatrix[0,:] = boundaryConditions[0]
 gridMatrix[-1,:] = boundaryConditions[1]
 gridMatrix[:, 0] = intialConditions
 
-for deltaTime in range (1, yVectorLength-1):
-    for deltaLength in range (1, xVectorLength-1):
-        gridMatrix[deltaLength,deltaTime]=(
-            (
-                (heatConductivity*deltaTime-1)/deltaLength**2)*
-                (gridMatrix[deltaLength-1,deltaTime-1]-
-                 2*gridMatrix[deltaLength,deltaTime-1]+
-                 gridMatrix[deltaLength+1,deltaTime-1])
-            ) + gridMatrix[deltaLength,deltaTime-1]
+factor=(heatConductivity*timeStepSize)/spaceStepSize**2
+print(factor)
 
-print(gridMatrix)
+for tau in range (1, tsLength-1):
+    for j in range (1, xsLength-1):
+        
+        gridMatrix[j,tau]=(factor*
+                (gridMatrix[j-1,tau-1]-
+                 2*gridMatrix[j,tau-1]+
+                 gridMatrix[j+1,tau-1])
+            ) + gridMatrix[j,tau-1]
+
 
 pyPlot.plot(gridMatrix)
 pyPlot.show()
