@@ -1,3 +1,7 @@
+# Forward Time Centered Space (ftcs) is an explicit numerical method
+# for derving the solution to PDEs
+
+# we will use the ftcs method below to simulate the 1D Heat Equation
 import numpy
 import matplotlib.pyplot as pyPlot
 
